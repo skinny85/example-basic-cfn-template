@@ -4,4 +4,31 @@ Resources:
   MySqsQueue:
     Type: AWS::SQS::Queue
     Properties:
-      DelaySeconds: 10
+      DelaySeconds: 25
+
+  MyDGApplication:
+    Type: 'AWS::CodeDeploy::Application'
+    Properties:
+      ComputePlatform: Lambda
+  MyDGRole:
+    Type: 'AWS::IAM::Role'
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          -
+            Action: 'sts:AssumeRole'
+            Effect: Allow
+            Principal:
+              Service: codedeploy.amazonaws.com
+        Version: '2012-10-17'
+      ManagedPolicyArns:
+        - 'arn:aws:iam::aws:policy/service-role/AWSCodeDeployRole'
+  MyDG:
+    Type: 'AWS::CodeDeploy::DeploymentGroup'
+    Properties:
+      ApplicationName:
+        Ref: MyDGApplication
+      ServiceRoleArn:
+        'Fn::GetAtt':
+          - MyDGRole
+          - Arn
