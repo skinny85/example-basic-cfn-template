@@ -1,5 +1,7 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Description: 'Super simple example CFN template.'
+Metadata:
+  A: B
 Resources:
   MySqsQueue:
     Type: AWS::SQS::Queue
